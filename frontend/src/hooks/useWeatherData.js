@@ -1,27 +1,20 @@
 import { useState } from 'react';
-import { fetchCurrentWeather, fetchWeatherForecast } from '../services/WeatherAPI';
+import { fetchCurrentWeather } from '../services/WeatherAPI';
 
 
 const useWeatherData = () => {
-  const [currentWeather, setCurrentWeather] = useState(null);
-  const [forecastWeather, setForecastWeather] = useState(null);
+  const [weatherData, setCurrentWeather] = useState(null);
 
-  const fetchWeather = async (city) => {
+  const fetchWeather = async (city, country_code) => {
     try {
-      const currentWeatherData = await fetchCurrentWeather(city);
-      setCurrentWeather({
-        temperature: currentWeatherData.temperature,
-        weatherDescription: currentWeatherData.weatherDescription,
-      });
-
-      const forecastWeatherData = await fetchWeatherForecast(city);
-      setForecastWeather(forecastWeatherData);
+      const currentWeatherData = await fetchCurrentWeather(city, country_code);
+      setCurrentWeather(currentWeatherData);
     } catch (error) {
       console.error('Error fetching weather data:', error);
     }
   };
 
-  return { currentWeather, forecastWeather, fetchWeather };
+  return { weatherData, fetchWeather };
 };
 
 export default useWeatherData;

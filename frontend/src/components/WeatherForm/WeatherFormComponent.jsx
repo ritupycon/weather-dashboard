@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 
-
-const WeatherFormComponent = ({ fetchWeather, fetchForecast }) => {
+const WeatherFormComponent = ({ fetchWeatherDataByZipCode, setSelectedZipCode }) => {
   const [zipCode, setZipCode] = useState('');
   const [countryCode, setCountryCode] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchWeather(`zip=${zipCode},${countryCode}`);
-    fetchForecast(`zip=${zipCode},${countryCode}`);
+    setSelectedZipCode(zipCode);
+    fetchWeatherDataByZipCode(zipCode, countryCode);
   };
 
   return (

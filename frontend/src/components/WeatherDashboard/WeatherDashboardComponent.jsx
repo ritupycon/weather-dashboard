@@ -6,6 +6,10 @@ import WeatherCardComponent from '../WeatherCard/WeatherCardComponent';
 import WeatherTickerComponent from '../WeatherTicker/WeatherTickerComponent';
 import WeatherFormComponent from '../WeatherForm/WeatherFormComponent';
 
+import useWeatherData from '../../hooks/useWeatherData';
+import useForecastData from '../../hooks/useForecastData';
+import useWeatherDataByZipCode from '../../hooks/useWeatherDataByZipCode';
+
 
 const cities = [
   { name: 'Mumbai', code: 'IN' },
@@ -15,42 +19,26 @@ const cities = [
 
 const WeatherDashboardComponent = () => {
   const [selectedCity, setSelectedCity] = useState(null);
-  const [weatherData, setWeatherData] = useState(null);
-  const [forecastData, setForecastData] = useState(null);
+  const [selectedZipCode, setSelectedZipCode] = useState(null);
   const [tickerCities, setTickerCities] = useState([cities[0], cities[1], cities[2]]);
   const [tickerData, setTickerData] = useState([]);
 
-  const apiKey = 'edc7a3d8fadfef9ae914a5808905da6e'; // Replace with your OpenWeatherMap API key
-
-  const fetchWeather = async (query) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?${query}&appid=${apiKey}&units=metric`;
-    try {
-      const response = await axios.get(url);
-      setWeatherData(response.data);
-    } catch (error) {
-      console.error('Error fetching the weather data:', error);
-    }
-  };
-
-  const fetchForecast = async (query) => {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?${query}&appid=${apiKey}&units=metric`;
-    try {
-      const response = await axios.get(url);
-      setForecastData(response.data);
-    } catch (error) {
-      console.error('Error fetching the forecast data:', error);
-    }
-  };
+  const { weatherData, fetchWeather } = useWeatherData();
+  const { forecastData, fetchForecast } = useForecastData();
+  const { weatherDataByZipCode, fetchWeatherDataByZipCode } = useWeatherDataByZipCode();
 
   const handleCityClick = (city) => {
     setSelectedCity(city);
-    fetchWeather(`q=${city.name},${city.code}`);
-    fetchForecast(`q=${city.name},${city.code}`);
+    setSelectedZipCode(null); // Reset selectedZipCode when city is selected
+    fetchWeather(city.name, city.code);
+    fetchForecast(city.name, city.code);
+    console.log(weatherData);
+
   };
 
   const fetchTickerData = async () => {
     const promises = tickerCities.map((city) =>
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city.name},${city.code}&appid=${apiKey}&units=metric`)
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city.name},${city.code}&appid=${'ssss'}&units=metric`)
     );
     try {
       const results = await Promise.all(promises);
@@ -63,11 +51,11 @@ const WeatherDashboardComponent = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchTickerData();
-    }, 10000000); // Fetch data every 60 seconds
+    }, 10000000);
 
-    fetchTickerData(); // Initial fetch
+    fetchTickerData();
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, [tickerCities]);
 
   return (
@@ -75,13 +63,22 @@ const WeatherDashboardComponent = () => {
       <h1 className="text-xl font-bold mb-4">Weather Dashboard</h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div>
-        <CitySelectorComponent cities={cities} handleCityClick={handleCityClick} />
-          <WeatherFormComponent fetchWeather={fetchWeather} fetchForecast={fetchForecast} />
+          <CitySelectorComponent cities={cities} handleCityClick={handleCityClick} />
+          <WeatherFormComponent
+            fetchWeatherDataByZipCode={fetchWeatherDataByZipCode}
+            setSelectedZipCode={setSelectedZipCode}
+          />
           {selectedCity && (
             <div>
               <h2 className="text-2xl font-bold mb-2">{selectedCity.name}</h2>
               <WeatherCardComponent title="Current Weather" weatherData={weatherData} />
               <WeatherCardComponent title="Forecast" weatherData={forecastData && forecastData.list[0]} />
+            </div>
+          )}
+          {selectedZipCode && (
+            <div>
+              <h2 className="text-2xl font-bold mb-2">Weather for Zip Code: {selectedZipCode}</h2>
+              <WeatherCardComponent title="Current Weather" weatherData={weatherDataByZipCode} />
             </div>
           )}
         </div>

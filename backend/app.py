@@ -7,10 +7,10 @@ from routes.weather_route import weather_bp
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     with app.app_context():
-        app.register_blueprint(weather_bp, url_prefix='/weather')
+        app.register_blueprint(weather_bp, url_prefix='/api/weather')
 
     return app
 

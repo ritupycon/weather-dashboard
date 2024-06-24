@@ -7,7 +7,9 @@ from routes.weather_route import weather_bp
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    CORS(app, origins=[
+        "http://localhost:3000",
+    ])
 
     with app.app_context():
         app.register_blueprint(weather_bp, url_prefix='/api/weather')
@@ -16,4 +18,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(host="0.0.0.0", port=8000)
+    app.run(debug=True)

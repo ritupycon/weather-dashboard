@@ -12,9 +12,11 @@ import useWeatherDataByZipCode from '../../hooks/useWeatherDataByZipCode';
 
 
 const cities = [
-  { name: 'Mumbai', code: 'IN' },
+  { name: 'Austin', code: 'US' },
   { name: 'Delhi', code: 'IN' },
-  { name: 'Florida', code: 'US' }
+  { name: 'Seatle', code: 'US' },
+  { name: 'Boston', code: 'US' }
+  { name: 'Los Angeles', code: 'US' }
 ];
 
 const WeatherDashboardComponent = () => {

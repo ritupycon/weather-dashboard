@@ -15,7 +15,7 @@ const cities = [
   { name: 'Austin', code: 'US' },
   { name: 'Delhi', code: 'IN' },
   { name: 'Seatle', code: 'US' },
-  { name: 'Boston', code: 'US' }
+  { name: 'Boston', code: 'US' },
   { name: 'Los Angeles', code: 'US' }
 ];
 

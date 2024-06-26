@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8000/api/weather';
+const BASE_URL = 'http://localhost:5000/api/weather';
 
 
 const fetchCurrentWeather = async (city, country_code) => {

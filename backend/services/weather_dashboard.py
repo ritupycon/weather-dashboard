@@ -25,6 +25,7 @@ class WeatherDashboardService:
         params = {'q': f"{city},{country_code}", 'appid': API_KEY}
         try:
             response = requests.get(CURRENT_WEATHER_API_URL, params=params)
+            print("ddddd", response)
             response.raise_for_status()
         except requests.RequestException as e:
             return None, response.status_code if response else 500

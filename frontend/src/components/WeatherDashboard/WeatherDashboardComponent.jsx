@@ -14,7 +14,7 @@ import useWeatherDataByZipCode from '../../hooks/useWeatherDataByZipCode';
 const cities = [
   { name: 'Austin', code: 'US' },
   { name: 'Delhi', code: 'IN' },
-  { name: 'Seatle', code: 'US' },
+  { name: 'Seattle', code: 'US' },
   { name: 'Boston', code: 'US' },
   { name: 'Los Angeles', code: 'US' }
 ];
@@ -40,7 +40,7 @@ const WeatherDashboardComponent = () => {
 
   const fetchTickerData = async () => {
     const promises = tickerCities.map((city) =>
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city.name},${city.code}&appid=${'ssss'}&units=metric`)
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city.name},${city.code}&appid=${'xxxxx'}&units=metric`)
     );
     try {
       const results = await Promise.all(promises);

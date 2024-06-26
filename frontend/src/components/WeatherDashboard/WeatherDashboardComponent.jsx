@@ -38,6 +38,12 @@ const WeatherDashboardComponent = () => {
 
   };
 
+  const handleZipCodeSubmit = (zipCode) => {
+    setSelectedZipCode(zipCode);
+    setSelectedCity(null); // Reset selectedCity when zip code is submitted
+    fetchWeatherDataByZipCode(zipCode);
+  };
+
   const fetchTickerData = async () => {
     const promises = tickerCities.map((city) =>
       axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city.name},${city.code}&appid=${'xxxxx'}&units=metric`)
@@ -68,7 +74,7 @@ const WeatherDashboardComponent = () => {
           <CitySelectorComponent cities={cities} handleCityClick={handleCityClick} />
           <WeatherFormComponent
             fetchWeatherDataByZipCode={fetchWeatherDataByZipCode}
-            setSelectedZipCode={setSelectedZipCode}
+            setSelectedZipCode={handleZipCodeSubmit}
           />
           {selectedCity && (
             <div>
